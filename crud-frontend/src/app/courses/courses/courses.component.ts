@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, delay } from 'rxjs';
 import { Course } from '../model/course';
 import { CoursesService } from '../services/courses.service';
 
@@ -18,7 +18,15 @@ export class CoursesComponent {
   constructor(private CoursesService: CoursesService   ){
     // this.courses = [];
     //this.CoursesService = new CoursesService();
-    this.courses$ = this.CoursesService.list();
+    this.courses$ = this.CoursesService.list()
+    .pipe(
+
+      catchError(error => {
+        console.log(error);
+
+        return of([])
+      })
+    );
   }
 
   ngOnInit(){
