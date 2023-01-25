@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { catchError, Observable, of, delay } from 'rxjs';
 import { Course } from '../model/course';
 import { CoursesService } from '../services/courses.service';
 
@@ -9,14 +10,26 @@ import { CoursesService } from '../services/courses.service';
 })
 export class CoursesComponent {
 
-  courses: Course[] = [];
+  courses$: Observable<Course[]>;
   displayedColumns = ['name', 'category'];
 
-  CoursesService: CoursesService;
+  //CoursesService: CoursesService;
 
-  constructor(){
+  constructor(private CoursesService: CoursesService   ){
     // this.courses = [];
-    this.CoursesService = new CoursesService();
-    this.courses = this.CoursesService.list();
+    //this.CoursesService = new CoursesService();
+    this.courses$ = this.CoursesService.list()
+    .pipe(
+
+      catchError(error => {
+        console.log(error);
+
+        return of([])
+      })
+    );
+  }
+
+  ngOnInit(){
+
   }
 }
