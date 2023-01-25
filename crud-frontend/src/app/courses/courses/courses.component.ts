@@ -12,11 +12,15 @@ export class CoursesComponent {
   courses: Course[] = [];
   displayedColumns = ['name', 'category'];
 
-  CoursesService: CoursesService;
+  //CoursesService: CoursesService;
 
-  constructor(){
+  constructor(private CoursesService: CoursesService   ){
     // this.courses = [];
-    this.CoursesService = new CoursesService();
+    //this.CoursesService = new CoursesService();
+
+  }
+
+  ngOnInit(){
     this.courses = this.CoursesService.list();
   }
 }
